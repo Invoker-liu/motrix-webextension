@@ -45,7 +45,6 @@ async function downloadAgent() {
       'motrixAPIkey',
       'extensionStatus',
       'enableNotifications',
-      'enableDownloadPrompt',
       'minFileSize',
       'blacklist',
       'motrixPort',
@@ -192,16 +191,18 @@ export function createMenuItem() {
       }
     });
 }
-browser.runtime.onStartup.addListener(function () {
+
+const loadExtension = () => {
   downloadAgent();
   createMenuItem();
   createOffscreen();
+}
+browser.runtime.onStartup.addListener(function () {
+  loadExtension();
 });
 
 browser.runtime.onInstalled.addListener(function () {
-  downloadAgent();
-  createMenuItem();
-  createOffscreen();
+  loadExtension();
 });
 
 // create the offscreen document if it doesn't already exist
